@@ -1,4 +1,4 @@
-import type { GetServerSideProps} from 'next'
+import type { GetStaticProps } from 'next'
 
 export default function Home({ repositories }: any) {
   return (
@@ -15,7 +15,7 @@ export default function Home({ repositories }: any) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const response = await fetch('https://api.github.com/users/matheus-omena/repos');
 
   const data = await response.json();
@@ -23,7 +23,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   return {
     props: {
-      repositories: repositoryNames
-    }
+      repositories: repositoryNames,
+      date: new Date().toISOString()
+    },
+    revalidate: 5
   }
 }
